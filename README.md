@@ -1,6 +1,6 @@
 # EnglishMentor
 
-EnglishMentor 是一款基于 LLaMA 3.1 或 GPT-4o-mini 的在线英语私教系统，提供英语对话练习和场景化学习训练。用户可以选择不同的场景，或直接与对话代理人进行自由对话，模拟真实生活中的英语交流场景，提升语言能力。
+EnglishMentor 是一款基于 AI 的在线英语私教系统，提供英语对话练习和场景化学习训练。用户可以选择不同的场景，或直接与对话代理人进行自由对话，模拟真实生活中的英语交流场景，提升语言能力。
 
 
 ## 产品设计
@@ -28,7 +28,7 @@ https://github.com/user-attachments/assets/6298a8e4-28fc-4a60-badc-59bff16b315e
 
 1. **克隆仓库**
    ```bash
-   git clone https://github.com/DjangoPeng/EnglishMentor.git
+   git clone https://github.com/cxxCoolStar/EnglishMentor.git
    cd EnglishMentor
    ```
 
@@ -79,5 +79,5 @@ https://github.com/user-attachments/assets/6298a8e4-28fc-4a60-badc-59bff16b315e
 ## 联系我们
 
 如果你有任何问题或建议，请通过以下方式联系我：
-- Email: pjt73651@gmail.com
-- GitHub Issues: https://github.com/DjangoPeng/EnglishMentor/issues
+- Email: 1848505943@qq.com
+- GitHub Issues: https://github.com/cxxCoolStar/EnglishMentor/issues
