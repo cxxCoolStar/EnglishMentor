@@ -81,3 +81,7 @@ https://github.com/user-attachments/assets/6298a8e4-28fc-4a60-badc-59bff16b315e
 如果你有任何问题或建议，请通过以下方式联系我：
 - Email: 1848505943@qq.com
 - GitHub Issues: https://github.com/cxxCoolStar/EnglishMentor/issues
+
+## 未来展望
+
+为了将会扩展更多场景，以满足自己学习英语的需求
