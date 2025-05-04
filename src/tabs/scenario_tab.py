@@ -3,6 +3,7 @@
 import gradio as gr
 from agents.scenario_agent import ScenarioAgent
 from utils.logger import LOG
+import os
 
 # 初始化场景代理
 agents = {
@@ -12,14 +13,20 @@ agents = {
 }
 
 def get_page_desc(scenario):
+    # 获取当前文件的绝对路径
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    # 回退两级目录到项目根目录
+    project_root = os.path.dirname(os.path.dirname(current_dir))
+    file_path = os.path.join(project_root, "content", "page", f"{scenario}.md")
+
     try:
-        with open(f"content/page/{scenario}.md", "r", encoding="utf-8") as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             scenario_intro = file.read().strip()
-        return scenario_intro
+            return scenario_intro
     except FileNotFoundError:
-        LOG.error(f"场景介绍文件 content/page/{scenario}.md 未找到！")
+        LOG.error(f"场景介绍文件 {file_path} 未找到！")
         return "场景介绍文件未找到。"
-    
+
 # 获取场景介绍并启动新会话的函数
 def start_new_scenario_chatbot(scenario):
     initial_ai_message = agents[scenario].start_new_session()  # 启动新会话并获取初始AI消息
@@ -31,30 +38,45 @@ def start_new_scenario_chatbot(scenario):
 
 # 场景代理处理函数，根据选择的场景调用相应的代理
 def handle_scenario(user_input, chat_history, scenario):
-    bot_message = agents[scenario].chat_with_history(user_input)  # 获取场景代理的回复
+    # 如果scenario为空，获取agents中的第一个值
+    if not scenario:
+        # 假设agents是字典，获取第一个键
+        first_agent_key = next(iter(agents))
+        bot_message = agents[first_agent_key].chat_with_history(user_input)
+    else:
+        bot_message = agents[scenario].chat_with_history(user_input)  # 获取场景代理的回复
+
     LOG.info(f"[ChatBot]: {bot_message}")  # 记录场景代理的回复
-    return bot_message  # 返回场景代理的回复
+    return bot_message
+
 
 def create_scenario_tab():
     with gr.Tab("场景"):  # 场景标签
         gr.Markdown("## 选择一个场景完成目标和挑战")  # 场景选择说明
 
-        # 创建单选框组件
+        # 创建单选框组件，添加value参数设置默认值
         scenario_radio = gr.Radio(
             choices=[
                 ("求职面试", "job_interview"),  # 求职面试选项
                 ("酒店入住", "hotel_checkin"),  # 酒店入住选项
                 # ("薪资谈判", "salary_negotiation"),  # 薪资谈判选项（注释掉）
                 # ("租房", "renting")  # 租房选项（注释掉）
-            ], 
-            label="场景"  # 单选框标签
+            ],
+            label="场景",  # 单选框标签
+            value="job_interview"  # 设置默认选中值
         )
 
         scenario_intro = gr.Markdown()  # 场景介绍文本组件
+
+        # 初始化chatbot并设置默认值
+        initial_ai_message = agents["job_interview"].start_new_session()
         scenario_chatbot = gr.Chatbot(
-            placeholder="<strong>你的英语私教 DjangoPeng</strong><br><br>选择场景后开始对话吧！",  # 聊天机器人的占位符
+            value=[(None, initial_ai_message)],  # 设置初始消息
             height=600,  # 聊天窗口高度
         )
+
+        # 首次加载时设置场景介绍
+        scenario_intro.value = get_page_desc("job_interview")
 
         # 更新场景介绍并在场景变化时启动新会话
         scenario_radio.change(
